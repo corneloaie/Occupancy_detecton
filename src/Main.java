@@ -1,6 +1,8 @@
 import weka.classifiers.Classifier;
 import weka.classifiers.Evaluation;
 import weka.classifiers.meta.AdditiveRegression;
+import weka.classifiers.meta.AttributeSelectedClassifier;
+import weka.classifiers.trees.J48;
 import weka.classifiers.trees.M5P;
 import weka.classifiers.trees.REPTree;
 import weka.classifiers.trees.RandomForest;
@@ -9,17 +11,20 @@ import weka.gui.beans.ModelPerformanceChart;
 import weka.gui.beans.ThresholdDataEvent;
 import weka.gui.visualize.PlotData2D;
 
+import java.util.Date;
+
 
 public class Main {
 
     public static void main(String[] args) {
 
         try {
-            Instances train = DataImport.getInstancesFromCSV("C:/Users/Cornel-PC/Desktop/occupancy_data/datatraining - Copy.csv");
-            Instances test = DataImport.getInstancesFromCSV("C:/Users/Cornel-PC/Desktop/occupancy_data/datatest - Copy.csv");
+
+            Instances train = DataImport.getInstancesFromARFF("C:/Users/Cornel-PC/Desktop/occupancy_data/datatraining - Copy.arff");
+            Instances test = DataImport.getInstancesFromARFF("C:/Users/Cornel-PC/Desktop/occupancy_data/datatest - Copy.arff");
             train.setClassIndex(train.numAttributes() - 1);
             test.setClassIndex(test.numAttributes() -1);
-            Classifier cls = new AdditiveRegression();
+            Classifier cls = new J48();
             cls.buildClassifier(train);
             Evaluation evaluation = new Evaluation(train);
             evaluation.evaluateModel(cls, test);
